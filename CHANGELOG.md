@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+### Changed
+- **Local `Jobs.run()` no longer persists results automatically**: Local runs previously always streamed results to EDSL's local object store (via `stream_to_cas=True`), even with `cache=False`, which required write access to the user's application-data directory. `Jobs.run()` now returns results without creating that local copy. Persistence is explicit: use `.save()`/`.ep` saving, the object-store APIs, or `Runner.submit(stream_to_cas=True)`. Existing stored artifacts are not deleted or migrated. (#2655)
+
 ## [1.0.7] - 2026-04-29
 ### Added
 - **EDSL Runner**: New in-process job runner that replaces remote-only execution. Uploads `FileStore` objects to GCS concurrently with a 10-thread executor (~15s → ~2-3s for 100 files), shows live `Uploading files to GCS: x/y` progress, and short-circuits per-task `should_skip_task()` when a survey has no skip rules. (#2396, #2422, #2456)
